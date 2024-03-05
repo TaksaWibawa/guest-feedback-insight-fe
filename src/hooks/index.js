@@ -1,0 +1,1 @@
+export { usePathnameToArray } from "./usePathnameToArray";
