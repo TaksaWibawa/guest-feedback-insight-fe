@@ -1,1 +1,1 @@
-export { CustomBreadcrumb } from "./CustomBreadcrumb";
+export { BreadcrumbCustom } from './BreadcrumbCustom';
