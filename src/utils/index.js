@@ -1,3 +1,4 @@
-export { getPathnameParts } from "./getPathnameParts";
-export { capitalizeSentence } from "./capitalizeSentence";
-export { addDotsToNumber } from "./addDotsToNumber";
+export { addDotsToNumber } from './addDotsToNumber';
+export { capitalizeSentence } from './capitalizeSentence';
+export { getPathnameParts } from './getPathnameParts';
+export { setScoreColor } from './setScoreColor';
