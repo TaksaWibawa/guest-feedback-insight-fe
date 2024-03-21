@@ -1,17 +1,17 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { BaseLayout } from "./layout";
-import { GuestReviewPage } from "./pages";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BaseLayout } from './layout';
+import { GuestReviewPage } from './pages';
 
 function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route
+				{/* <Route
 					path="/"
 					element={<div>Hello World!</div>}
-				/>
+				/> */}
 				<Route
-					path="/dashboard/guest-review"
+					path="/"
 					element={
 						<BaseLayout>
 							<GuestReviewPage />
