@@ -2,7 +2,7 @@ import { capitalizeSentence } from "@/utils";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import { BiChevronRight } from "react-icons/bi";
 
-export function CustomBreadcrumb({ path }) {
+export function BreadcrumbCustom({ path }) {
 	return (
 		<Breadcrumb
 			spacing="8px"

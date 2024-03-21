@@ -1,1 +1,0 @@
-export { TableBase } from "./TableBase";
