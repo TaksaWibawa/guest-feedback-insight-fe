@@ -1,0 +1,1 @@
+export { APISentimentAnalytics } from './APISentimentAnalytics';
