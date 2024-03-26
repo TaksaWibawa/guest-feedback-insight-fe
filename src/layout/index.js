@@ -1,2 +1,2 @@
-export { BaseLayout } from "./BaseLayout";
-export { DashboardLayout } from "./DashboardLayout";
+export { LayoutBase as BaseLayout } from './layout-base';
+export { LayoutDashboard as DashboardLayout } from './layout-dashboard';
