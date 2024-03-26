@@ -1,1 +1,3 @@
-export { GuestReviewPage } from "./GuestReview.page";
+export { PageSentimentAnalytics } from './sentiment-analytics';
+export { PageGuestReviews } from './guest-reviews';
+export { PageContentMissing } from './content-missing';

@@ -1,10 +1,10 @@
 import { APISentimentAnalytics } from '@/apis';
-import { SectionStatistics, SectionTable } from '@/components/dashboard/section';
 import { DashboardLayout } from '@/layout';
+import { SectionScores, SectionStatistics } from '@/components/dashboard/sentiment-analytics';
 import { useCategoriesStore, useStatisticsStore } from '@/stores';
 import { useEffect } from 'react';
 
-export function GuestReviewPage() {
+export function PageSentimentAnalytics() {
 	const { setShowAspects, setCategories, setLoading: setCategoriesLoading } = useCategoriesStore();
 	const { setStatistics, setLoading: setStatisticLoading } = useStatisticsStore();
 
@@ -25,11 +25,11 @@ export function GuestReviewPage() {
 
 	return (
 		<DashboardLayout
-			title={'Guest Review'}
+			title={'Sentiment Analytics'}
 			gap={'2rem'}
 		>
 			<SectionStatistics />
-			<SectionTable />
+			<SectionScores />
 		</DashboardLayout>
 	);
 }
