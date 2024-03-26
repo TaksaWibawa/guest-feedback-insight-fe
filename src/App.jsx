@@ -1,23 +1,17 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { BaseLayout } from './layout';
-import { GuestReviewPage } from './pages';
+import { ROUTES } from './routes';
 
 function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				{/* <Route
-					path="/"
-					element={<div>Hello World!</div>}
-				/> */}
-				<Route
-					path="/"
-					element={
-						<BaseLayout>
-							<GuestReviewPage />
-						</BaseLayout>
-					}
-				/>
+				{ROUTES.map((route, index) => (
+					<Route
+						key={index}
+						path={route.path}
+						element={route.element}
+					/>
+				))}
 			</Routes>
 		</BrowserRouter>
 	);
