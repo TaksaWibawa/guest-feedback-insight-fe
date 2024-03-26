@@ -1,1 +1,1 @@
-export { LoadingCustom } from './LoadingCustom';
+export { LoadingCustom } from './loading-custom';
