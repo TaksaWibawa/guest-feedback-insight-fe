@@ -1,2 +1,2 @@
-export { ChartPie } from './ChartPie';
-export { ChartSentimentColor } from './ChartSentimentColor';
+export { ChartPie } from './chart-pie';
+export { ChartSentimentColor } from './chart-sentiment-color';

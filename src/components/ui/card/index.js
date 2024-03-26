@@ -1,2 +1,2 @@
-export { CardSentiment } from "./CardSentiment";
-export { CardRating } from "./CardRating";
+export { CardSentiment } from './card-sentiment';
+export { CardRating } from './card-rating';

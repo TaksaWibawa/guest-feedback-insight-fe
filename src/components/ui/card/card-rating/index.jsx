@@ -1,6 +1,6 @@
-import { Box, CircularProgress, CircularProgressLabel, Flex, HStack, Text, Tooltip } from "@chakra-ui/react";
-import { CardBase } from "./CardBase";
-import { addDotsToNumber } from "@/utils";
+import { Box, CircularProgress, CircularProgressLabel, Flex, HStack, Text, Tooltip } from '@chakra-ui/react';
+import { CardBase } from '../card-base';
+import { addDotsToNumber } from '@/utils';
 
 export function CardRating({ currentRating, previousRating, currentReviewers, previousReviewers }) {
 	const calculateRating = (rating) => {
@@ -9,33 +9,33 @@ export function CardRating({ currentRating, previousRating, currentReviewers, pr
 
 	return (
 		<CardBase
-			title={"Review Rating"}
-			subTitle={"Past 7 Days"}
+			title={'Review Rating'}
+			subTitle={'Past 7 Days'}
 			propsBody={{
-				justifyContent: "center",
+				justifyContent: 'center',
 			}}
 		>
 			<Flex
 				direction="column"
 				alignItems="center"
-				gap={"1rem"}
+				gap={'1rem'}
 			>
-				<HStack spacing={"1.5rem"}>
+				<HStack spacing={'1.5rem'}>
 					<Tooltip
 						label={`Current Rating: ${currentRating} / Previous Rating: ${previousRating}`}
 						hasArrow
 						closeOnClick={false}
 					>
-						<Box position={"relative"}>
+						<Box position={'relative'}>
 							<CircularProgress
 								value={calculateRating(currentRating)}
-								size={"150px"}
+								size={'150px'}
 								thickness="12px"
 								color="brand.300"
 							/>
 							<CircularProgress
 								value={calculateRating(previousRating)}
-								size={"115px"}
+								size={'115px'}
 								thickness="12px"
 								color="customGray.200"
 								position="absolute"
@@ -45,8 +45,8 @@ export function CardRating({ currentRating, previousRating, currentReviewers, pr
 								zIndex="1"
 							>
 								<CircularProgressLabel
-									fontWeight={"semibold"}
-									color={"brand.500"}
+									fontWeight={'semibold'}
+									color={'brand.500'}
 								>
 									{currentRating}
 								</CircularProgressLabel>
@@ -54,67 +54,67 @@ export function CardRating({ currentRating, previousRating, currentReviewers, pr
 						</Box>
 					</Tooltip>
 					<Flex
-						flexDirection={"column"}
-						justifyContent={"flex-start"}
-						gap={"1.25rem"}
+						flexDirection={'column'}
+						justifyContent={'flex-start'}
+						gap={'1.25rem'}
 					>
 						<Flex
-							gap={"0.25rem"}
-							flexDirection={"column"}
+							gap={'0.25rem'}
+							flexDirection={'column'}
 						>
 							<Flex
-								gap={"0.5rem"}
-								alignItems={"center"}
+								gap={'0.5rem'}
+								alignItems={'center'}
 							>
 								<Box
-									bgColor={"brand.300"}
-									width={"0.75rem"}
-									height={"0.75rem"}
+									bgColor={'brand.300'}
+									width={'0.75rem'}
+									height={'0.75rem'}
 								/>
 								<Text>Current Rating</Text>
 							</Flex>
 							<Text
-								ml={"1.3rem"}
-								fontSize={"small"}
-								color={"customGray.200"}
+								ml={'1.3rem'}
+								fontSize={'small'}
+								color={'customGray.200'}
 							>
 								{addDotsToNumber(currentReviewers || 10000)} Reviewers
 							</Text>
 						</Flex>
 						<Flex
-							gap={"0.25rem"}
-							flexDirection={"column"}
+							gap={'0.25rem'}
+							flexDirection={'column'}
 						>
 							<Flex
-								gap={"0.5rem"}
-								alignItems={"center"}
+								gap={'0.5rem'}
+								alignItems={'center'}
 							>
 								<Box
-									bgColor={"customGray.200"}
-									width={"0.75rem"}
-									height={"0.75rem"}
+									bgColor={'customGray.200'}
+									width={'0.75rem'}
+									height={'0.75rem'}
 								/>
 								<Text>Previous Rating</Text>
 							</Flex>
 							<Text
-								ml={"1.3rem"}
-								fontSize={"small"}
-								color={"customGray.200"}
+								ml={'1.3rem'}
+								fontSize={'small'}
+								color={'customGray.200'}
 							>
 								{addDotsToNumber(previousReviewers || 7000)} Reviewers
 							</Text>
 						</Flex>
 					</Flex>
 				</HStack>
-				<Box fontSize={"0.9rem"}>
-					Total{" "}
+				<Box fontSize={'0.9rem'}>
+					Total{' '}
 					<Text
-						display={"inline"}
-						color={"brand.400"}
-						fontWeight={"semibold"}
+						display={'inline'}
+						color={'brand.400'}
+						fontWeight={'semibold'}
 					>
 						{addDotsToNumber(currentReviewers + previousReviewers || 10000)}
-					</Text>{" "}
+					</Text>{' '}
 					verified reviewers.
 				</Box>
 			</Flex>

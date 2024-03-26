@@ -1,5 +1,5 @@
-import { ChartPie } from '../chart';
-import { CardBase } from './CardBase';
+import { ChartPie } from '../../chart';
+import { CardBase } from '../card-base';
 
 export function CardSentiment({ currentPeriodData, lastPeriodData }) {
 	return (
