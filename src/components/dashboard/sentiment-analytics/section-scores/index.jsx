@@ -11,7 +11,7 @@ import { SkeletonTableRow } from '@/components/ui/skeleton';
 
 const TABLE_COLUMNS = ['category', 'sentiment score', 'trends', 'mentions', 'positive', 'negative', 'neutral'];
 
-export function SectionTable() {
+export function SectionScores() {
 	const { showAspects, categories, loading, handleToggle } = useCategoriesStore();
 	const { aspects, setAspects } = useAspectsStore();
 
