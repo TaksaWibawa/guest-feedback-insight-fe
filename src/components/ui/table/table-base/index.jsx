@@ -1,12 +1,13 @@
 import { capitalizeSentence } from '@/utils';
 import { Table, TableContainer, Tbody, Th, Thead, Tr } from '@chakra-ui/react';
 
-export function TableBase({ heads, children, ...propsTableBase }) {
+export function TableBase({ heads, children, variant, colorScheme, propsTable, propsBase }) {
 	return (
 		<TableContainer>
 			<Table
-				variant={propsTableBase?.variant || 'striped'}
-				{...propsTableBase}
+				variant={variant || 'striped'}
+				colorScheme={colorScheme || 'gray'}
+				{...propsBase}
 			>
 				<Thead>
 					<Tr>
@@ -15,6 +16,8 @@ export function TableBase({ heads, children, ...propsTableBase }) {
 								key={head}
 								color={'black'}
 								fontSize={'0.875rem'}
+								borderBottom={'2px solid #E2E8F0'}
+								{...propsTable}
 							>
 								{capitalizeSentence(head)}
 							</Th>
