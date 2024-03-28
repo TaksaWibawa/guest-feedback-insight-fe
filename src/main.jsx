@@ -4,6 +4,7 @@ import { theme } from './configs';
 import App from './App.jsx';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
 	<React.StrictMode>
@@ -11,7 +12,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
 			resetCSS
 			theme={theme}
 		>
-			<App />
+			<BrowserRouter>
+				<App />
+			</BrowserRouter>
 		</ChakraProvider>
 	</React.StrictMode>
 );

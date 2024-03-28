@@ -11,6 +11,7 @@ export const ROUTES = [
 				</div>
 			</BaseLayout>
 		),
+		title: 'Welcome',
 	},
 	{
 		path: '/guest-reviews',
@@ -19,6 +20,7 @@ export const ROUTES = [
 				<PageGuestReviews />
 			</BaseLayout>
 		),
+		title: 'Guest Reviews',
 	},
 	{
 		path: '/sentiment-analytics',
@@ -27,9 +29,11 @@ export const ROUTES = [
 				<PageSentimentAnalytics />
 			</BaseLayout>
 		),
+		title: 'Sentiment Analytics',
 	},
 	{
 		path: '*',
 		element: <PageContentMissing />,
+		title: 'Page Not Found',
 	},
 ];

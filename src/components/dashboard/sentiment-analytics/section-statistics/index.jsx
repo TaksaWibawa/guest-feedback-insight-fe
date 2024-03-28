@@ -1,7 +1,7 @@
 import { CardRating, CardSentiment } from '@/components/ui/card';
 import { Grid, GridItem } from '@chakra-ui/react';
-import { LoadingCustom } from '@/components/ui/loading';
 import { useStatisticsStore } from '@/stores';
+import { LoadingBase } from '@/components/ui/loading';
 
 export function SectionStatistics() {
 	const { statistics, loading } = useStatisticsStore();
@@ -13,7 +13,7 @@ export function SectionStatistics() {
 		>
 			<GridItem>
 				{loading ? (
-					<LoadingCustom
+					<LoadingBase
 						width={'100%'}
 						height={'300px'}
 						boxShadow={'md'}

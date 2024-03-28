@@ -1,1 +1,2 @@
-export { LoadingCustom } from './loading-custom';
+export { LoadingBase } from './loading-base';
+export { LoadingOverlay } from './loading-overlay';

@@ -3,29 +3,41 @@ import { formatDate } from '@/utils';
 import { Pagination } from '@/components/ui/pagination';
 import { SkeletonTableRow } from '@/components/ui/skeleton';
 import { TableBase, TableCell } from '@/components/ui/table';
-import { Tr } from '@chakra-ui/react';
+import { Tr, useDisclosure } from '@chakra-ui/react';
 import { useDropdownStore, useReviewDetailStore, useReviewsStore } from '@/stores';
 import { APIGuestReviews } from '@/apis';
+import { LoadingOverlay } from '@/components/ui/loading';
+import { ModalDetailReview } from '@/components/ui/modal';
 
-const TABLE_COLUMNS = ['Reviewer Name', 'Date', 'Category', 'Comment', 'Actions'];
+const TABLE_COLUMNS = [
+	// 'Reviewer Name',
+	'Date',
+	'Category',
+	'Comment',
+	'Actions',
+];
 
 export function SectionReviews({ onNextPage, onPrevPage }) {
-	const { data, loading } = useReviewsStore();
+	const { data: reviewsData, loading: reviewsLoading } = useReviewsStore();
+	const { setData: setDetailData, loading: detailLoading, setLoading: setDetailLoading } = useReviewDetailStore();
 	const { vendor } = useDropdownStore();
-	const { setData, setLoading } = useReviewDetailStore();
+
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const ID = '10083468'; // will be changed how to get this id by using the dropdown
 
 	const fetchReviewDetails = (reviewerId) => {
+		setDetailLoading(true);
 		APIGuestReviews.getReviewDetails(ID, vendor, reviewerId)
 			.then((response) => {
-				setData(response.data);
-				console.log(response.data);
+				setDetailLoading(false);
+				setDetailData(response.data);
+				onOpen();
 			})
 			.catch((error) => {
 				console.error(error);
-			})
-			.finally(() => setLoading(false));
+				setDetailLoading(false);
+			});
 	};
 
 	return (
@@ -40,7 +52,7 @@ export function SectionReviews({ onNextPage, onPrevPage }) {
 					textAlign: 'center',
 				}}
 			>
-				{loading && (
+				{reviewsLoading && (
 					<SkeletonTableRow
 						cell={5}
 						row={10}
@@ -48,17 +60,16 @@ export function SectionReviews({ onNextPage, onPrevPage }) {
 					/>
 				)}
 
-				{!loading && Object.keys(data).length === 0 && (
+				{!reviewsLoading && Object.keys(reviewsData).length === 0 && (
 					<Tr>
 						<TableCell colSpan={5}>Data not found</TableCell>
 					</Tr>
 				)}
-
-				{!loading &&
-					data &&
-					data.reviews &&
-					data.reviews.length > 0 &&
-					data.reviews.map((review, index) => (
+				{!reviewsLoading &&
+					reviewsData &&
+					reviewsData.reviews &&
+					reviewsData.reviews.length > 0 &&
+					reviewsData.reviews.map((review, index) => (
 						<Tr
 							key={review.reviewer_id}
 							bgColor={index % 2 === 0 ? 'gray.50' : 'white'}
@@ -66,11 +77,11 @@ export function SectionReviews({ onNextPage, onPrevPage }) {
 								bgColor: 'gray.100',
 							}}
 						>
-							<TableCell w={'15%'}>{review.reviewer_name}</TableCell>
-							<TableCell w={'20%'}>{formatDate(review.date)}</TableCell>
-							<TableCell w={'15%'}>Category</TableCell>
+							{/* <TableCell w={'15%'}>{review.reviewer_name}</TableCell> */}
+							<TableCell w={'15%'}>{formatDate(review.date)}</TableCell>
+							<TableCell w={'10%'}>Category</TableCell>
 							<TableCell
-								w={'35%'}
+								w={'60%'}
 								textTransform={'none'}
 							>
 								{review.comments}
@@ -92,13 +103,20 @@ export function SectionReviews({ onNextPage, onPrevPage }) {
 					))}
 			</TableBase>
 
-			{data && data.pagination && (
+			{reviewsData && reviewsData.pagination && (
 				<Pagination
-					totalPage={data?.pagination?.totalPage}
-					page={data?.pagination?.page}
+					totalPage={reviewsData?.pagination?.totalPage}
+					page={reviewsData?.pagination?.page}
 					onNextPage={onNextPage}
 					onPrevPage={onPrevPage}
-					isLoading={loading}
+					isLoading={reviewsLoading}
+				/>
+			)}
+			<LoadingOverlay isLoading={detailLoading} />
+			{!detailLoading && (
+				<ModalDetailReview
+					isOpen={isOpen}
+					onClose={onClose}
 				/>
 			)}
 		</>

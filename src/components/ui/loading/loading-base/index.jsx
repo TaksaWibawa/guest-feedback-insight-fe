@@ -1,6 +1,6 @@
 import { CircularProgress, Flex } from '@chakra-ui/react';
 
-export function LoadingCustom({ size, ...props }) {
+export function LoadingBase({ size, ...props }) {
 	return (
 		<Flex
 			justifyContent="center"
