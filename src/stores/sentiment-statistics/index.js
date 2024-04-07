@@ -5,4 +5,5 @@ export const useStatisticsStore = create((set) => ({
 	loading: true,
 	setStatistics: (statistics) => set({ statistics }),
 	setLoading: (loading) => set({ loading }),
+	resetStatisticsStore: () => set({ statistics: {}, loading: true }),
 }));
