@@ -1,6 +1,6 @@
-import { Route, Routes, useLocation } from 'react-router-dom';
-import { ROUTES } from './routes';
+import { useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
+import { ROUTES_LIST, RouteBase } from './routes';
 
 const INITIAL_TITLE = 'GuestPro';
 
@@ -8,7 +8,7 @@ function App() {
 	const location = useLocation();
 
 	useEffect(() => {
-		const title = ROUTES.find((route) => route.path === location.pathname)?.title;
+		const title = ROUTES_LIST.find((route) => route.path === location.pathname)?.title;
 
 		document.title = title || INITIAL_TITLE;
 		return () => {
@@ -16,17 +16,7 @@ function App() {
 		};
 	}, [location]);
 
-	return (
-		<Routes>
-			{ROUTES.map((route, index) => (
-				<Route
-					key={index}
-					path={route.path}
-					element={route.element}
-				/>
-			))}
-		</Routes>
-	);
+	return <RouteBase />;
 }
 
 export default App;
