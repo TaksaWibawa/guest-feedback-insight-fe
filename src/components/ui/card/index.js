@@ -1,2 +1,2 @@
 export { CardSentiment } from './card-sentiment';
-export { CardRating } from './card-rating';
+export { CardTopPhrases } from './card-top-phrases';

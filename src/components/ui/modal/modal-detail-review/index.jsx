@@ -119,16 +119,17 @@ export function ModalDetailReview({ isOpen, onClose }) {
 				>
 					{data?.comments}
 				</Text>
-				<ChartWordCloud
+				{/* <ChartWordCloud
 					parentWidth={'100%'}
 					parentHeight={'300px'}
 					words={words}
 					colors={colors}
-				/>
+				/> */}
 				<Flex
 					flexDirection={'column'}
 					justifyContent={'flex-start'}
 					gap={2}
+					mt={4}
 				>
 					<Text
 						fontSize={'2xl'}

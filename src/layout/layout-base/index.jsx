@@ -1,17 +1,16 @@
-import { Sidebar } from '@/components/ui/sidebar';
-import { Grid, GridItem } from '@chakra-ui/react';
+import { NavigationDesktop } from '@/components/ui/navigation/desktop';
+import { Grid, GridItem, useMediaQuery } from '@chakra-ui/react';
 
 export function LayoutBase({ children }) {
+	const [isLargerThanLaptopXL] = useMediaQuery('(min-width: 80em)');
 	return (
 		<Grid
 			templateColumns={'0fr 1fr'}
 			maxW={'100vw'}
 			padding={0}
 		>
-			<GridItem>
-				<Sidebar />
-			</GridItem>
-			<GridItem>{children}</GridItem>
+			<GridItem colSpan={1}>{isLargerThanLaptopXL && <NavigationDesktop />}</GridItem>
+			<GridItem colSpan={1}>{children}</GridItem>
 		</Grid>
 	);
 }

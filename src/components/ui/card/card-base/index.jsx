@@ -1,29 +1,46 @@
-import { Card, CardBody, CardHeader, Heading, Text } from "@chakra-ui/react";
+import { Card, CardBody, CardHeader, Flex, Heading, Text } from '@chakra-ui/react';
+import { DropdownCustom } from '../../dropdown';
 
-export function CardBase({ children, title, subTitle, propsHeader, propsBody }) {
+export function CardBase({ children, title, subTitle, filterOptions, propsHeader, propsBody, propsTitle, propsDropdown }) {
 	return (
 		<Card
-			width={"100%"}
-			height={"300px"}
-			boxShadow={"md"}
+			width={'full'}
+			height={'25rem'}
+			boxShadow={'md'}
 		>
 			<CardHeader
-				textAlign={propsHeader?.textAlign || "center"}
+				display={'flex'}
+				justifyContent={propsHeader?.justifyContent || 'space-between'}
+				alignItems={propsHeader?.alignItems || 'center'}
+				textAlign={propsHeader?.textAlign || 'center'}
 				paddingBottom={0}
 				{...propsHeader}
 			>
-				<Heading fontSize={"1.5rem"}>{title}</Heading>
-				<Text
-					fontSize={"1.15rem"}
-					color={"GrayText"}
+				<Flex
+					direction={'column'}
+					justifyContent={'center'}
+					width={propsTitle?.width || ''}
+					{...propsTitle}
 				>
-					{subTitle}
-				</Text>
+					<Heading fontSize={'1.5rem'}>{title}</Heading>
+					<Text
+						fontSize={'1.15rem'}
+						color={'GrayText'}
+					>
+						{subTitle}
+					</Text>
+				</Flex>
+				{filterOptions && (
+					<DropdownCustom
+						options={filterOptions}
+						{...propsDropdown}
+					/>
+				)}
 			</CardHeader>
 			<CardBody
-				display={"flex"}
-				alignItems={propsBody?.alignItems || "center"}
-				paddingTop={propsBody?.paddingTop || "0.5rem"}
+				display={'flex'}
+				alignItems={propsBody?.alignItems || 'center'}
+				paddingTop={propsBody?.paddingTop || '0.5rem'}
 				{...propsBody}
 			>
 				{children}

@@ -1,16 +1,16 @@
 import { ChartPie } from '../../chart';
 import { CardBase } from '../card-base';
 
-export function CardSentiment({ currentPeriodData, lastPeriodData }) {
+export function CardSentiment({ chartData }) {
 	return (
 		<CardBase
-			title={'Sentiment Analysis'}
-			subTitle={'per Month'}
+			title={'Ratio Sentiment Analysis'}
+			subTitle={'In Percentage'}
+			propsTitle={{
+				width: '100%',
+			}}
 		>
-			<ChartPie
-				currentPeriodData={currentPeriodData}
-				lastPeriodData={lastPeriodData}
-			/>
+			<ChartPie chartData={chartData} />
 		</CardBase>
 	);
 }

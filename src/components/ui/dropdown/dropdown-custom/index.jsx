@@ -4,7 +4,7 @@ export function DropdownCustom({ width, options, defaultValue, onChange, isLoadi
 	return (
 		<Select
 			size={'sm'}
-			maxW={'9rem'}
+			maxW={'10rem'}
 			w={width}
 			defaultValue={defaultValue}
 			onChange={(event) => {

@@ -1,54 +1,58 @@
 import { Box } from '@chakra-ui/react';
-import { scaleLinear } from '@visx/scale';
+import { scaleLog } from '@visx/scale';
 import { Text as WordcloudText } from '@visx/text';
+import { memo, useEffect, useMemo, useState } from 'react';
 import { useParentSize } from '@visx/responsive';
 import { Wordcloud } from '@visx/wordcloud';
 
 const fixedRandomGenerator = () => 0.5;
 
-export function ChartWordCloud({ parentWidth, parentHeight, words, colors, wordPadding }) {
+export const ChartWordCloud = memo(({ parentWidth, parentHeight, words, colors, wordPadding }) => {
 	const { parentRef, width, height } = useParentSize();
 
-	const wordsArray = words.split(' ');
+	const [minVal, setMinVal] = useState(0);
+	const [maxVal, setMaxVal] = useState(0);
 
-	const wordFreq = (arr) => {
-		const freqMap = {};
+	useEffect(() => {
+		const newMinVal = Math.min(...words.map((w) => w.value));
+		const newMaxVal = Math.max(...words.map((w) => w.value));
 
-		for (const w of arr) {
-			if (!freqMap[w]) freqMap[w] = 0;
-			freqMap[w] += 1;
-		}
-		return Object.keys(freqMap).map((word) => ({ text: word, value: freqMap[word] }));
-	};
+		setMinVal(newMinVal);
+		setMaxVal(newMaxVal);
+	}, [words]);
 
-	const fontScale = scaleLinear({
-		domain: [Math.min(...wordsArray.map((w) => w.length)), Math.max(...wordsArray.map((w) => w.length))],
-		range: [25, 100],
-	});
+	const fontScale = useMemo(() => {
+		const minFontSize = height * 0.02;
+		const maxFontSize = height * 0.1;
+		return scaleLog({
+			domain: [minVal, maxVal],
+			range: [minFontSize, maxFontSize],
+		});
+	}, [minVal, maxVal, height]);
 
 	const fontSizeSetter = (datum) => fontScale(datum.value);
 
 	return (
 		<Box
 			width={parentWidth || '100%'}
-			height={parentHeight || '300px'}
+			height={parentHeight || '200px'}
 			ref={parentRef}
 		>
 			<Wordcloud
-				words={wordFreq(wordsArray)}
+				words={words}
 				width={width}
 				height={height}
 				fontSize={fontSizeSetter}
 				font={'Impact'}
 				padding={wordPadding || 1}
-				spiral={'rectangular'}
+				spiral={'archimedean'}
 				rotate={0}
 				random={fixedRandomGenerator}
 			>
 				{(cloudWords) =>
 					cloudWords.map((w, i) => (
 						<WordcloudText
-							key={w.text}
+							key={`word-${w.text}-${i}`}
 							fill={colors[i % colors.length]}
 							textAnchor={'middle'}
 							transform={`translate(${w.x}, ${w.y}) rotate(${w.rotate})`}
@@ -62,4 +66,6 @@ export function ChartWordCloud({ parentWidth, parentHeight, words, colors, wordP
 			</Wordcloud>
 		</Box>
 	);
-}
+});
+
+ChartWordCloud.displayName = 'ChartWordCloud';

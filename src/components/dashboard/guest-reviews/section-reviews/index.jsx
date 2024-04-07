@@ -3,28 +3,46 @@ import { formatDate } from '@/utils';
 import { Pagination } from '@/components/ui/pagination';
 import { SkeletonTableRow } from '@/components/ui/skeleton';
 import { TableBase, TableCell } from '@/components/ui/table';
-import { Tr, useDisclosure } from '@chakra-ui/react';
+import { Flex, Tr, useDisclosure } from '@chakra-ui/react';
 import { useDropdownStore, useReviewDetailStore, useReviewsStore } from '@/stores';
 import { APIGuestReviews } from '@/apis';
 import { LoadingOverlay } from '@/components/ui/loading';
 import { ModalDetailReview } from '@/components/ui/modal';
+import { DropdownCustom } from '@/components/ui/dropdown';
 
-const TABLE_COLUMNS = [
-	// 'Reviewer Name',
-	'Date',
-	'Category',
-	'Comment',
-	'Actions',
+const TABLE_COLUMNS = ['Date', 'Category', 'Comment', 'Actions'];
+
+const VENDOR_OPTIONS = [
+	{
+		label: 'Airbnb',
+		value: 'airbnb',
+	},
+	{
+		label: 'Booking.com',
+		value: 'booking.com',
+	},
+	{
+		label: 'Tripadvisor',
+		value: 'tripadvisor',
+	},
+	{
+		label: 'Agoda',
+		value: 'agoda',
+	},
 ];
 
 export function SectionReviews({ onNextPage, onPrevPage }) {
 	const { data: reviewsData, loading: reviewsLoading } = useReviewsStore();
 	const { setData: setDetailData, loading: detailLoading, setLoading: setDetailLoading } = useReviewDetailStore();
-	const { vendor } = useDropdownStore();
+	const { vendor, setVendor } = useDropdownStore();
 
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const ID = '10083468'; // will be changed how to get this id by using the dropdown
+
+	const handleVendorChange = (value) => {
+		setVendor(value);
+	};
 
 	const fetchReviewDetails = (reviewerId) => {
 		setDetailLoading(true);
@@ -42,6 +60,19 @@ export function SectionReviews({ onNextPage, onPrevPage }) {
 
 	return (
 		<>
+			<Flex
+				gap={'0.5rem'}
+				alignItems={'center'}
+				justifyContent={'flex-end'}
+			>
+				<DropdownCustom
+					width={'25rem'}
+					options={VENDOR_OPTIONS}
+					defaultValue={VENDOR_OPTIONS[0].value}
+					onChange={handleVendorChange}
+					isLoading={reviewsLoading}
+				/>
+			</Flex>
 			<TableBase
 				heads={TABLE_COLUMNS}
 				variant={'simple'}

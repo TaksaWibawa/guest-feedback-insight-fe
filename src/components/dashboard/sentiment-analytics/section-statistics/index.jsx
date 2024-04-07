@@ -1,4 +1,4 @@
-import { CardRating, CardSentiment } from '@/components/ui/card';
+import { CardSentiment, CardTopPhrases } from '@/components/ui/card';
 import { Grid, GridItem } from '@chakra-ui/react';
 import { useStatisticsStore } from '@/stores';
 import { LoadingBase } from '@/components/ui/loading';
@@ -8,10 +8,13 @@ export function SectionStatistics() {
 
 	return (
 		<Grid
-			templateColumns={'60% 38%'}
-			gap={'2%'}
+			templateColumns={{
+				base: '1fr',
+				xl: '1fr 1fr',
+			}}
+			gap={{ base: '2rem', xl: '1rem' }}
 		>
-			<GridItem>
+			<GridItem colSpan={1}>
 				{loading ? (
 					<LoadingBase
 						width={'100%'}
@@ -19,18 +22,11 @@ export function SectionStatistics() {
 						boxShadow={'md'}
 					/>
 				) : (
-					<CardSentiment
-						currentPeriodData={Object.values(statistics.currPeriodData)}
-						lastPeriodData={Object.values(statistics.lastPeriodData)}
-					/>
+					<CardSentiment chartData={Object.values(statistics.currPeriodData)} />
 				)}
 			</GridItem>
-			<GridItem>
-				<CardRating
-					currentRating={4.4}
-					previousRating={2.7}
-					totalReviewers={10000}
-				/>
+			<GridItem colSpan={1}>
+				<CardTopPhrases />
 			</GridItem>
 		</Grid>
 	);

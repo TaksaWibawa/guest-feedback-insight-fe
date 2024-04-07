@@ -5,7 +5,7 @@ export function ModalBase({ isOpen, onClose, children, size }) {
 		<Modal
 			isOpen={isOpen}
 			onClose={onClose}
-			size={size || '3xl'}
+			size={size || { base: 'sm', md: 'xl' }}
 			isCentered
 			scrollBehavior={'inside'}
 		>

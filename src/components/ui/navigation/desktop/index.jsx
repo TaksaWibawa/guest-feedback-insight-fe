@@ -1,36 +1,24 @@
-import { Box, Divider, Flex, Image, Spacer } from '@chakra-ui/react';
-import { ButtonIconOutline, ButtonOutline } from '../button';
+import { Box, Divider, Flex, Image, Spacer, useDisclosure } from '@chakra-ui/react';
+import { ButtonIconOutline, ButtonOutline } from '../../button';
 import { MdInsertChart, MdPeople } from 'react-icons/md';
 import { Profile } from './Profile';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import LogoFull from '@/assets/guestpro-full.png';
 import LogoIcon from '@/assets/guestpro-icon.png';
-import { useSidebarStore } from '@/stores';
 
-const SIDEBAR_DATA = [
-	{
-		name: 'Sentiment Analytics',
-		icon: <MdInsertChart size={24} />,
-		href: '/sentiment-analytics',
-	},
-	{
-		name: 'Guest Reviews',
-		icon: <MdPeople size={24} />,
-		href: '/guest-reviews',
-	},
-];
-
-export function Sidebar() {
+export function NavigationDesktop() {
 	const navigate = useNavigate();
-	const { isCollapsed, setIsCollapsed } = useSidebarStore();
+	const location = useLocation().pathname;
+
+	const { isOpen, onToggle } = useDisclosure();
 
 	const checkActive = (href) => {
-		return window.location.pathname === href;
+		return location === href;
 	};
 
 	const handleCollapse = () => {
-		setIsCollapsed(!isCollapsed);
+		onToggle();
 	};
 
 	return (
@@ -39,7 +27,7 @@ export function Sidebar() {
 			left={0}
 			top={0}
 			h={'100vh'}
-			w={isCollapsed ? '6rem' : '16rem'}
+			w={!isOpen ? '6rem' : '16rem'}
 			p={'1.5rem 1rem'}
 			flexDirection={'column'}
 			alignItems={'center'}
@@ -57,13 +45,13 @@ export function Sidebar() {
 				alignItems={'center'}
 			>
 				<Box
-					maxW={isCollapsed ? '2.5rem' : '15rem'}
+					maxW={!isOpen ? '2.5rem' : '15rem'}
 					height={'auto'}
 					onClick={handleCollapse}
 					_hover={{ cursor: 'pointer' }}
 				>
 					<Image
-						src={isCollapsed ? LogoIcon : LogoFull}
+						src={!isOpen ? LogoIcon : LogoFull}
 						alt="GuestPro"
 						objectFit="contain"
 					/>
@@ -72,12 +60,12 @@ export function Sidebar() {
 			<Divider borderColor={'blackAlpha.500'} />
 			<Flex
 				flexDirection={'column'}
-				alignItems={isCollapsed ? 'center' : ''}
+				alignItems={!isOpen ? 'center' : ''}
 				w={'full'}
 				gap={'1rem'}
 			>
-				{SIDEBAR_DATA.map((item, index) =>
-					isCollapsed ? (
+				{NAVIGATION_DESKTOP_DATA.map((item, index) =>
+					!isOpen ? (
 						<ButtonIconOutline
 							key={index}
 							icon={item.icon}
@@ -96,7 +84,23 @@ export function Sidebar() {
 				)}
 			</Flex>
 			<Spacer />
-			<Profile isCollapsed={isCollapsed} />
+			<Profile
+				isCollapsed={!isOpen}
+				setIsCollapsed={handleCollapse}
+			/>
 		</Flex>
 	);
 }
+
+const NAVIGATION_DESKTOP_DATA = [
+	{
+		name: 'Sentiment Analytics',
+		icon: <MdInsertChart size={24} />,
+		href: '/sentiment-analytics',
+	},
+	{
+		name: 'Guest Reviews',
+		icon: <MdPeople size={24} />,
+		href: '/guest-reviews',
+	},
+];
