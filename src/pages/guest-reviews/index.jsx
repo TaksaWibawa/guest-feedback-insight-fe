@@ -1,52 +1,53 @@
 import { APIGuestReviews } from '@/apis';
-import { SectionReviews } from '@/components/dashboard/guest-reviews';
 import { DashboardLayout } from '@/layout';
-import { useDropdownStore, useReviewsStore } from '@/stores';
 import { useCallback, useEffect } from 'react';
-
-const ID = '10083468'; // will be changed how to get this id by using the dropdown
+import { useDropdownStore, useReviewsStore } from '@/stores';
+import { SectionReviews } from '@/components/dashboard/guest-reviews';
 
 export function PageGuestReviews() {
-	const { setData, setLoading } = useReviewsStore();
-	const { vendor } = useDropdownStore();
+  const { setData, setLoading, resetReviewsStore } = useReviewsStore();
+  const { vendor } = useDropdownStore();
 
-	const fetchReviews = useCallback(
-		(page = 1) => {
-			setLoading(true);
-			APIGuestReviews.getReviews(ID, vendor, { page })
-				.then((response) => {
-					setData(response.data);
-				})
-				.catch((error) => {
-					console.error(error);
-					setData([]);
-				})
-				.finally(() => setLoading(false));
-		},
-		[setData, setLoading, vendor]
-	);
+  const fetchReviews = useCallback(
+    (page = 1) => {
+      setLoading(true);
+      APIGuestReviews.getReviews({ vendor, page })
+        .then((response) => {
+          setData(response.data);
+        })
+        .catch(() => {
+          setData([]);
+        })
+        .finally(() => setLoading(false));
+    },
+    [setData, setLoading, vendor]
+  );
 
-	const handleNextPage = (page) => {
-		fetchReviews(page + 1);
-	};
+  const handleNextPage = (page) => {
+    fetchReviews(page + 1);
+  };
 
-	const handlePrevPage = (page) => {
-		fetchReviews(page - 1);
-	};
+  const handlePrevPage = (page) => {
+    fetchReviews(page - 1);
+  };
 
-	useEffect(() => {
-		fetchReviews();
-	}, [fetchReviews]);
+  useEffect(() => {
+    fetchReviews();
 
-	return (
-		<DashboardLayout
-			title={'Guest Reviews'}
-			gap={'2rem'}
-		>
-			<SectionReviews
-				onNextPage={handleNextPage}
-				onPrevPage={handlePrevPage}
-			/>
-		</DashboardLayout>
-	);
+    return () => {
+      resetReviewsStore();
+    };
+  }, [fetchReviews, resetReviewsStore]);
+
+  return (
+    <DashboardLayout
+      title={'Guest Reviews'}
+      gap={'2rem'}
+    >
+      <SectionReviews
+        onNextPage={handleNextPage}
+        onPrevPage={handlePrevPage}
+      />
+    </DashboardLayout>
+  );
 }

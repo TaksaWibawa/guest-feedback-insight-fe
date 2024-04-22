@@ -1,2 +1,2 @@
-export { TableBase } from './table-base';
-export { TableCell } from './table-cell';
+export * from './TableCell';
+export * from './TableBase';

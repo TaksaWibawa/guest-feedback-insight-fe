@@ -1,1 +1,1 @@
-export { DropdownCustom } from './dropdown-custom';
+export * from './DropdownCustom';

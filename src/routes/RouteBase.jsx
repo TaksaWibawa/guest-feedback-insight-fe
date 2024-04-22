@@ -1,8 +1,8 @@
 import { BaseLayout } from '@/layout';
-import { PageContentMissing, PageGuestReviews, PageLogin, PageSentimentAnalytics } from '@/pages';
+import { PageContentMissing, PageGuestReviews, PageLogin, PageSentimentAnalytics, PageUnauthorized } from '@/pages';
 import { RoutePrivate } from './RoutePrivate';
-import { useRoutes } from 'react-router-dom';
 import { RouteProtected } from './RouteProtected';
+import { useRoutes } from 'react-router-dom';
 
 export const RouteBase = () => {
 	const routes = useRoutes([
@@ -35,6 +35,10 @@ export const RouteBase = () => {
 					),
 				},
 			],
+		},
+		{
+			path: '/unauthorized',
+			element: <PageUnauthorized />,
 		},
 		{
 			path: '*',

@@ -1,2 +1,2 @@
-export { ModalBase } from './modal-base';
-export { ModalDetailReview } from './modal-detail-review';
+export * from './ModalBase';
+export * from './ModalDetailReview';

@@ -1,2 +1,2 @@
-export { LoadingBase } from './loading-base';
-export { LoadingOverlay } from './loading-overlay';
+export * from './LoadingBase';
+export * from './LoadingOverlay';

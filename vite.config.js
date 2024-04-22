@@ -15,5 +15,8 @@ export default defineConfig(({ mode }) => {
 				'@': path.resolve(__dirname, 'src'),
 			},
 		},
+		server: {
+			host: '0.0.0.0',
+		},
 	};
 });

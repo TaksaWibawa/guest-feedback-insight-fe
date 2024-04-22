@@ -1,2 +1,2 @@
-export { SectionStatistics } from './section-statistics';
-export { SectionScores } from './section-scores';
+export * from './SectionScores';
+export * from './SectionStatistics';

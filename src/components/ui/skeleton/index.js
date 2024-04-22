@@ -1,1 +1,1 @@
-export { SkeletonTableRow } from './skeleton-table-row';
+export * from './SkeletonTableRow';

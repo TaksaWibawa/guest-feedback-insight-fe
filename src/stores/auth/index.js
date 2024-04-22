@@ -11,7 +11,8 @@ export const useAuthStore = create(
 	persist(
 		(set) => ({
 			...initialState,
-			setUser: (user) => set({ user }),
+			setAccessToken: (accessToken) => set((state) => ({ user: { ...state.user, accessToken } })),
+			setUser: (user) => set((state) => ({ user: { ...state.user, ...user } })),
 			setAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
 			setLoading: (isLoading) => set({ isLoading }),
 			logout: () => {

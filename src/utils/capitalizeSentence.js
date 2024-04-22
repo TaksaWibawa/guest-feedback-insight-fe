@@ -1,13 +1,13 @@
+import { capitalize } from 'lodash';
+
 export const capitalizeSentence = (sentence) => {
-	if (sentence === 0) return "";
+	if (!sentence) return '';
 
-	sentence = sentence.replace(/-/g, " ");
+	const sentences = sentence.split('. ');
 
-	const words = sentence.split(" ");
+	const capitalizedSentences = sentences.map((sentence) => capitalize(sentence));
 
-	const capitalizedWords = words.map((word) => {
-		return word.charAt(0).toUpperCase() + word.slice(1);
-	});
+	const capitalizedText = capitalizedSentences.join('. ');
 
-	return capitalizedWords.join(" ");
+	return capitalizedText;
 };

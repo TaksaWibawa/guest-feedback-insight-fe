@@ -1,1 +1,1 @@
-export { InputCustom } from './input-custom';
+export * from './InputCustom';

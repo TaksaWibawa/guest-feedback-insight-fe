@@ -1,33 +1,34 @@
 import { APISentimentAnalytics } from '@/apis';
 import { DashboardLayout } from '@/layout';
 import { SectionScores, SectionStatistics } from '@/components/dashboard/sentiment-analytics';
-import { useCategoriesStore, useStatisticsStore } from '@/stores';
+import { useAnalyticsStore, useCategoriesStore, useStatisticsStore, useWordcloudStore } from '@/stores';
 import { useEffect } from 'react';
 
 export function PageSentimentAnalytics() {
 	const { setCategories, setLoading: setCategoriesLoading, resetCategoriesStore } = useCategoriesStore();
+	const { setAnalytics, setLoading: setAnalyticsLoading, resetAnalyticsStore } = useAnalyticsStore();
 	const { setStatistics, setLoading: setStatisticLoading, resetStatisticsStore } = useStatisticsStore();
+	const { setWordcloud, setLoading: setWordcloudLoading, resetWordcloudStore } = useWordcloudStore();
 
 	useEffect(() => {
-		const fetchCategories = async () => {
-			setCategoriesLoading(true);
+		const fetchAnalytics = async () => {
+			setAnalyticsLoading(true);
 			try {
-				const response = await APISentimentAnalytics.getCategories();
-				setCategories(response.data);
+				const response = await APISentimentAnalytics.getSentimentAnalytics();
+				setAnalytics(response.data);
 			} catch (error) {
-				setCategories([]);
-				throw new Error(error);
+				setAnalytics([]);
 			} finally {
-				setCategoriesLoading(false);
+				setAnalyticsLoading(false);
 			}
 		};
 
-		fetchCategories();
+		fetchAnalytics();
 
 		return () => {
-			resetCategoriesStore();
+			resetAnalyticsStore();
 		};
-	}, [setCategories, setCategoriesLoading, resetCategoriesStore]);
+	}, [setAnalytics, setAnalyticsLoading, resetAnalyticsStore]);
 
 	useEffect(() => {
 		const fetchStatistics = async () => {
@@ -37,7 +38,6 @@ export function PageSentimentAnalytics() {
 				setStatistics(response.data);
 			} catch (error) {
 				setStatistics({});
-				throw new Error(error);
 			} finally {
 				setStatisticLoading(false);
 			}
@@ -49,6 +49,40 @@ export function PageSentimentAnalytics() {
 			resetStatisticsStore();
 		};
 	}, [setStatistics, setStatisticLoading, resetStatisticsStore]);
+
+	useEffect(() => {
+		const fetchWordcloud = async (category) => {
+			setWordcloudLoading(true);
+			try {
+				const response = await APISentimentAnalytics.getSentimentWordcloud(category);
+				setWordcloud(response.data);
+			} catch (error) {
+				setWordcloud([]);
+			} finally {
+				setWordcloudLoading(false);
+			}
+		};
+
+		const fetchCategory = async () => {
+			setCategoriesLoading(true);
+			try {
+				const response = await APISentimentAnalytics.getSentimentCategories();
+				setCategories(response.data);
+				fetchWordcloud(response.data[0].id);
+			} catch (error) {
+				setCategories([]);
+			} finally {
+				setCategoriesLoading(false);
+			}
+		};
+
+		fetchCategory();
+
+		return () => {
+			resetCategoriesStore();
+			resetWordcloudStore();
+		};
+	}, [setWordcloud, setWordcloudLoading, resetWordcloudStore, setCategories, setCategoriesLoading, resetCategoriesStore]);
 
 	return (
 		<DashboardLayout

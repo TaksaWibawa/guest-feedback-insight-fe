@@ -1,22 +1,13 @@
 import { AxiosError } from 'axios';
 import { axiosInstance, firebaseAuth } from '@/configs';
 import { FirebaseError } from 'firebase/app';
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { signOut } from 'firebase/auth';
 
 export const APIAuth = {
 	loginViaEmail: async ({ email, password }) => {
 		try {
-			const response = await signInWithEmailAndPassword(firebaseAuth, email, password);
-			const userData = {
-				uid: response.user.uid,
-				email: response.user.email,
-				displayName: response.user.displayName,
-				photoURL: response.user.photoURL,
-				phoneNumber: response.user.phoneNumber,
-				accessToken: response.user.stsTokenManager.accessToken,
-			};
-
-			return userData;
+			const response = await axiosInstance.post('/auth/login', { email, password });
+			return response.data;
 		} catch (error) {
 			if (error instanceof FirebaseError) {
 				throw new Error(error.message);
@@ -32,7 +23,7 @@ export const APIAuth = {
 		try {
 			const userData = { email, password, displayName, phoneNumber };
 
-			const response = await axiosInstance.post('/auth/register-via-email', userData);
+			const response = await axiosInstance.post('/auth/register', userData);
 			return response.data;
 		} catch (error) {
 			if (error instanceof FirebaseError) {
@@ -47,16 +38,8 @@ export const APIAuth = {
 
 	getCurrentUser: async () => {
 		try {
-			const response = firebaseAuth.currentUser;
-			const userData = {
-				uid: response.uid,
-				email: response.email,
-				displayName: response.displayName,
-				photoURL: response.photoURL,
-				phoneNumber: response.phoneNumber,
-				accessToken: response.stsTokenManager.accessToken,
-			};
-			return userData;
+			const response = await axiosInstance.get('/auth/user');
+			return response.data;
 		} catch (error) {
 			if (error instanceof FirebaseError) {
 				throw new Error(error.message);

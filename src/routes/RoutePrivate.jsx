@@ -5,16 +5,18 @@ import { Navigate, Outlet } from 'react-router-dom';
 export function RoutePrivate() {
 	const { isAuthenticated, isLoading } = useAuth();
 
-	if (isLoading) {
-		return <LoadingOverlay isLoading={isLoading} />;
-	}
+	// if (isLoading) {
+	// 	return <LoadingOverlay isLoading={isLoading} />;
+	// }
 
-	return isAuthenticated ? (
-		<Outlet />
-	) : (
-		<Navigate
-			to="/"
-			replace
-		/>
-	);
+	// return isAuthenticated ? (
+	// 	<Outlet />
+	// ) : (
+	// 	<Navigate
+	// 		to="/"
+	// 		replace
+	// 	/>
+	// );
+
+	return <Outlet />;
 }

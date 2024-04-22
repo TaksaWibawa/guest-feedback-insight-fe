@@ -1,4 +1,4 @@
-export { ChartPie } from './chart-pie';
-export { ChartSentimentColor } from './chart-sentiment-color';
-export { ChartWordCloud } from './chart-word-cloud';
-export { ChartFrequentPhrases } from './chart-frequent-phrases';
+export * from './ChartPie';
+export * from './ChartWordCloud';
+export * from './ChartFrequentPhrases';
+export * from './ChartSentimentColor';
