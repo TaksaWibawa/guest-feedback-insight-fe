@@ -1,6 +1,5 @@
 import { APIAuth } from '@/apis';
 import { Container, Grid, GridItem, useMediaQuery } from '@chakra-ui/react';
-import { useAuthStore } from '@/stores';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,29 +10,12 @@ export function PageLogin() {
   const navigate = useNavigate();
   const [isLargerThanLaptop] = useMediaQuery('(min-width: 62em)');
 
-  const { setAccessToken, setUser } = useAuthStore();
-
   const handleOnSubmit = async (credentials) => {
     try {
       const response = await APIAuth.loginViaEmail(credentials);
-      if (!response) {
-        console.error('Failed to login');
-        return;
+      if (response) {
+        navigate('/sentiment-analytics');
       }
-
-      setAccessToken(response.data.accessToken);
-
-      const currentUserData = await APIAuth.getCurrentUser();
-      if (!currentUserData || !currentUserData.data) {
-        console.error('Failed to get user data');
-        return;
-      }
-
-      const { uid, email, displayName, photoURL, phoneNumber } = currentUserData.data;
-      const userData = { uid, email, displayName, photoURL, phoneNumber };
-      setUser(userData);
-
-      navigate('/sentiment-analytics');
     } catch (error) {
       console.error(error);
     }

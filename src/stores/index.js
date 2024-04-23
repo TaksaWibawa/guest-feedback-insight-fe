@@ -4,5 +4,6 @@ export { useCategoriesStore } from './sentiment-categories';
 export { useDropdownStore } from './dropdown';
 export { useReviewDetailStore } from './guest-review-detail';
 export { useReviewsStore } from './guest-reviews-list';
+export { useScrappingStore } from './guest-reviews-scrapping';
 export { useStatisticsStore } from './sentiment-statistics';
 export { useWordcloudStore } from './sentiment-wordcloud';
