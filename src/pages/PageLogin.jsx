@@ -1,23 +1,36 @@
 import { APIAuth } from '@/apis';
 import { Container, Grid, GridItem, useMediaQuery } from '@chakra-ui/react';
+import { createToastStore } from '@/stores';
+import { SectionFormLogin } from '@/components/authentication/login';
 import { useFormik } from 'formik';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 import IllustrationLogin from '@/assets/dashboard.jpg';
-import { SectionFormLogin } from '@/components/authentication/login';
 
 export function PageLogin() {
   const navigate = useNavigate();
   const [isLargerThanLaptop] = useMediaQuery('(min-width: 62em)');
 
+  const { setToast } = createToastStore();
+  const [loading, setLoading] = useState(false);
+
   const handleOnSubmit = async (credentials) => {
+    setLoading(true);
     try {
       const response = await APIAuth.loginViaEmail(credentials);
       if (response) {
+        formik.resetForm();
         navigate('/sentiment-analytics');
       }
     } catch (error) {
-      console.error(error);
+      setToast({
+        status: 'ERROR',
+        title: 'Error',
+        message: error.message || 'Something went wrong',
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -49,7 +62,6 @@ export function PageLogin() {
         formik.setErrors(errors);
         if (Object.keys(errors).length === 0) {
           handleOnSubmit(values);
-          formik.resetForm();
         }
       });
     },
@@ -82,7 +94,10 @@ export function PageLogin() {
           px={{ base: 10, md: 20 }}
           gap={4}
         >
-          <SectionFormLogin formHandler={formik} />
+          <SectionFormLogin
+            formHandler={formik}
+            loading={loading}
+          />
         </GridItem>
       </Grid>
     </Container>

@@ -8,6 +8,7 @@ export * from './input';
 export * from './loading';
 export * from './modal';
 export * from './navigation';
+export * from './notification';
 export * from './pagination';
 export * from './skeleton';
 export * from './table';

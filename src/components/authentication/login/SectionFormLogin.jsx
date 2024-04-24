@@ -1,11 +1,8 @@
 import { Box, Button, Flex, Image, Text } from '@chakra-ui/react';
 import { InputCustom } from '@/components/ui';
-import { useNavigate } from 'react-router-dom';
 import GuestProIllustration from '@/assets/guestpro-full.png';
 
-export function SectionFormLogin({ formHandler }) {
-  const navigate = useNavigate();
-
+export function SectionFormLogin({ formHandler, loading }) {
   return (
     <Flex
       h={'100vh'}
@@ -39,6 +36,7 @@ export function SectionFormLogin({ formHandler }) {
             value={formHandler.values.email}
             onChange={formHandler.handleChange}
             error={formHandler.errors.email}
+            isLoading={loading}
           />
           <InputCustom
             label="Password"
@@ -47,6 +45,7 @@ export function SectionFormLogin({ formHandler }) {
             value={formHandler.values.password}
             onChange={formHandler.handleChange}
             error={formHandler.errors.password}
+            isLoading={loading}
           />
           <Button
             type="submit"
@@ -55,6 +54,7 @@ export function SectionFormLogin({ formHandler }) {
             _hover={{
               bgColor: 'brand.600',
             }}
+            isLoading={loading}
           >
             Login
           </Button>
@@ -67,20 +67,10 @@ export function SectionFormLogin({ formHandler }) {
           md: 'sm',
         }}
         textAlign={'center'}
+        color={'gray.500'}
+        fontWeight={'bold'}
       >
-        Don&apos;t have an account?{' '}
-        <Text
-          as="span"
-          color="brand.500"
-          cursor="pointer"
-          _hover={{
-            textDecoration: 'underline',
-            color: 'brand.600',
-          }}
-          onClick={() => navigate('/register')}
-        >
-          Register
-        </Text>
+        PKL Udayana 2024 - GuestPro
       </Text>
     </Flex>
   );

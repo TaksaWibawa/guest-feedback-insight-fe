@@ -1,6 +1,6 @@
 import { APIGuestReviews } from '@/apis';
 import { DashboardLayout } from '@/layout';
-import { useScrappingStore } from '@/stores';
+import { createToastStore, useScrappingStore } from '@/stores';
 import { Center, VStack, IconButton, Heading } from '@chakra-ui/react';
 import { MdWarning } from 'react-icons/md';
 
@@ -13,14 +13,24 @@ const RESPONSE_TEXT = {
 
 export function PageScrapping() {
   const { isLoading, setIsLoading } = useScrappingStore();
+  const { setToast } = createToastStore();
 
   const handleScrapping = async () => {
     setIsLoading(true);
     try {
       await APIGuestReviews.startScrapping();
-      alert(RESPONSE_TEXT.SUCCESS);
+      setToast({
+        status: 'SUCCESS',
+        title: 'Success',
+        message: RESPONSE_TEXT.SUCCESS,
+      });
     } catch (error) {
-      alert(`${RESPONSE_TEXT.ERROR} ${error.message}`);
+      setToast({
+        status: 'ERROR',
+        title: 'Error',
+        message: `${RESPONSE_TEXT.ERROR} ${error || 'Something went wrong'}`,
+      });
+      throw new Error(error);
     } finally {
       setIsLoading(false);
     }

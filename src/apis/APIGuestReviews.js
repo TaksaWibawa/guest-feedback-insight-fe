@@ -14,7 +14,7 @@ export const APIGuestReviews = {
     }
   },
 
-  getReviewDetails: async (reviewId) => {
+  getReviewDetails: async ({ reviewId }) => {
     try {
       const response = await axiosInstance.get(`/reviews/detail/${reviewId}`);
       return response.data;

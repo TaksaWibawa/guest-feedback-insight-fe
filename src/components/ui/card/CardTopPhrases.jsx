@@ -1,34 +1,35 @@
 import { APISentimentAnalytics } from '@/apis';
 import { ChartWordCloud } from '../chart';
-import { useCategoriesStore, useWordcloudStore } from '@/stores';
 import { useState } from 'react';
 import { CardBase } from './CardBase';
+import { useApiCall } from '@/hooks';
 
-export function CardTopPhrases({ chartData, options }) {
-  const { categories } = useCategoriesStore();
-  const { loading: loadingWordcloud } = useWordcloudStore();
-
-  const [selectedOption, setSelectedOption] = useState(options[0]?.name);
+export function CardTopPhrases({ chartData, categories }) {
+  const [selectedOption, setSelectedOption] = useState(categories[0]?.name);
   const [data, setData] = useState(chartData);
 
-  const handleCategoryChange = (value) => {
+  const [fetchWordcloud, loadingWordcloud] = useApiCall(
+    APISentimentAnalytics.getSentimentWordcloud
+  );
+
+  const handleCategoryChange = async (value) => {
     setSelectedOption(value);
-    APISentimentAnalytics.getSentimentWordcloud(
-      categories.find((category) => category?.name === value).id
-    )
-      .then((response) => {
-        setData(response.data);
-      })
-      .catch((error) => {
-        throw new Error(error);
+    try {
+      const response = await fetchWordcloud({
+        categoryId: categories.find((c) => c.name === value).id,
       });
+      setData(response);
+    } catch (error) {
+      setData([]);
+      throw new Error(error);
+    }
   };
 
   return (
     <CardBase
       title={'Most Frequent Phrases'}
       subTitle={`Showing most frequent phrases for ${selectedOption}`}
-      filterOptions={options}
+      filterOptions={categories}
       propsTitle={{
         textAlign: 'left',
       }}

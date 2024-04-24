@@ -32,6 +32,7 @@ axiosInstance.interceptors.response.use(
       useAuthStore.getState().logout();
       globalRoute.navigate && globalRoute.navigate('/unauthorized');
     }
+
     return Promise.reject(error);
   }
 );

@@ -14,7 +14,7 @@ import { useReviewDetailStore } from '@/stores';
 import React from 'react';
 
 export function ModalDetailReview({ isOpen, onClose }) {
-  const { data } = useReviewDetailStore();
+  const { reviewDetail } = useReviewDetailStore();
 
   const setSentimentColor = (sentiment) => {
     if (sentiment === 'positive') return 'green.500';
@@ -34,7 +34,7 @@ export function ModalDetailReview({ isOpen, onClose }) {
     return sortedAsqe || [];
   };
 
-  const sortedAsqe = sortSentiment(data?.asqe);
+  const sortedAsqe = sortSentiment(reviewDetail?.asqe);
 
   return (
     <ModalBase
@@ -60,7 +60,7 @@ export function ModalDetailReview({ isOpen, onClose }) {
           fontStyle={'italic'}
           textAlign={'justify'}
         >
-          {capitalizeSentence(data?.review) || 'No Review'}
+          {capitalizeSentence(reviewDetail?.review) || 'No Review'}
         </Text>
         <Flex
           flexDirection={'column'}

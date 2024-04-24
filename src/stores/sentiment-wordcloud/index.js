@@ -1,9 +1,11 @@
 import { create } from 'zustand';
 
+const initialState = {
+  wordcloud: [],
+};
+
 export const useWordcloudStore = create((set) => ({
-	wordcloud: [],
-	loading: true,
-	setWordcloud: (wordcloud) => set({ wordcloud }),
-	setLoading: (loading) => set({ loading }),
-	resetWordcloudStore: () => set({ wordcloud: [], loading: true }),
+  ...initialState,
+  setWordcloud: (wordcloud) => set({ wordcloud }),
+  resetWordcloudStore: () => set(initialState),
 }));

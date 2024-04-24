@@ -1,43 +1,42 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { APIGuestReviews } from '@/apis';
 import { DashboardLayout } from '@/layout';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDropdownStore, useReviewsStore } from '@/stores';
 import { SectionReviews } from '@/components/dashboard/guest-reviews';
+import { useApiCall } from '@/hooks';
 
 export function PageGuestReviews() {
-  const { setData, setLoading, resetReviewsStore } = useReviewsStore();
+  const { setReviews, resetReviewsStore } = useReviewsStore();
   const { vendor } = useDropdownStore();
 
-  const fetchReviews = useCallback(
-    (page = 1) => {
-      setLoading(true);
-      APIGuestReviews.getReviews({ vendor, page })
-        .then((response) => {
-          setData(response.data);
-        })
-        .catch(() => {
-          setData([]);
-        })
-        .finally(() => setLoading(false));
-    },
-    [setData, setLoading, vendor]
-  );
+  const [fetchReviews, loadingReviews] = useApiCall(APIGuestReviews.getReviews);
 
-  const handleNextPage = (page) => {
-    fetchReviews(page + 1);
+  const handleNextPage = async (page) => {
+    const response = await fetchReviews({ vendor, page: page + 1 });
+    setReviews(response);
   };
 
-  const handlePrevPage = (page) => {
-    fetchReviews(page - 1);
+  const handlePrevPage = async (page) => {
+    const response = await fetchReviews({ vendor, page: page - 1 });
+    setReviews(response);
   };
 
   useEffect(() => {
-    fetchReviews();
+    (async () => {
+      try {
+        const response = await fetchReviews({ vendor });
+        setReviews(response);
+      } catch (error) {
+        setReviews([]);
+        throw new Error(error);
+      }
+    })();
 
     return () => {
       resetReviewsStore();
     };
-  }, [fetchReviews, resetReviewsStore]);
+  }, [setReviews, resetReviewsStore, vendor]);
 
   return (
     <DashboardLayout
@@ -47,6 +46,7 @@ export function PageGuestReviews() {
       <SectionReviews
         onNextPage={handleNextPage}
         onPrevPage={handlePrevPage}
+        isLoading={loadingReviews}
       />
     </DashboardLayout>
   );

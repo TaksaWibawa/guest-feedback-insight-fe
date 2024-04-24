@@ -12,6 +12,7 @@ import {
 import { capitalizeSentence } from '@/utils';
 import { Flex, Tr, useDisclosure } from '@chakra-ui/react';
 import { useDropdownStore, useReviewDetailStore, useReviewsStore } from '@/stores';
+import { useApiCall } from '@/hooks';
 
 const TABLE_COLUMNS = ['No', 'Review', 'Action'];
 
@@ -30,37 +31,33 @@ const VENDOR_OPTIONS = [
   },
 ];
 
-export function SectionReviews({ onNextPage, onPrevPage }) {
-  const { data: reviewsData, loading: reviewsLoading } = useReviewsStore();
-  const {
-    setData: setDetailData,
-    loading: detailLoading,
-    setLoading: setDetailLoading,
-  } = useReviewDetailStore();
+export function SectionReviews({ onNextPage, onPrevPage, isLoading }) {
+  const { reviews } = useReviewsStore();
+  const { setReviewDetail } = useReviewDetailStore();
   const { setVendor } = useDropdownStore();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const startIndex = (reviews?.pagination?.page - 1) * reviews?.pagination?.limit + 1;
+
+  const [fetchReviewDetails, fetchReviewDetailsLoading] = useApiCall(
+    APIGuestReviews.getReviewDetails
+  );
+
+  const handleOpen = async (reviewId) => {
+    onOpen();
+    try {
+      const response = await fetchReviewDetails({ reviewId }, false);
+      setReviewDetail(response);
+    } catch (error) {
+      setReviewDetail({});
+      throw new Error(error);
+    }
+  };
+
   const handleVendorChange = (value) => {
     setVendor(value);
   };
-
-  const fetchReviewDetails = (reviewerId) => {
-    setDetailLoading(true);
-    APIGuestReviews.getReviewDetails(reviewerId)
-      .then((response) => {
-        setDetailLoading(false);
-        setDetailData(response.data);
-        onOpen();
-      })
-      .catch((error) => {
-        console.error(error);
-        setDetailLoading(false);
-        setDetailData({});
-      });
-  };
-
-  const startIndex = (reviewsData?.pagination?.page - 1) * reviewsData?.pagination?.limit + 1;
 
   return (
     <>
@@ -74,7 +71,7 @@ export function SectionReviews({ onNextPage, onPrevPage }) {
           options={VENDOR_OPTIONS}
           defaultValue={VENDOR_OPTIONS[0]}
           onChange={handleVendorChange}
-          isLoading={reviewsLoading}
+          isLoading={isLoading}
         />
       </Flex>
       <TableBase
@@ -87,7 +84,7 @@ export function SectionReviews({ onNextPage, onPrevPage }) {
           textAlign: 'center',
         }}
       >
-        {reviewsLoading && (
+        {isLoading && (
           <SkeletonTableRow
             cell={5}
             row={10}
@@ -95,16 +92,14 @@ export function SectionReviews({ onNextPage, onPrevPage }) {
           />
         )}
 
-        {!reviewsLoading && Object.keys(reviewsData).length === 0 && (
+        {!isLoading && Object.keys(reviews).length === 0 && (
           <Tr>
             <TableCell colSpan={5}>Data not found</TableCell>
           </Tr>
         )}
-        {!reviewsLoading &&
-          reviewsData &&
-          reviewsData.reviews &&
-          reviewsData.reviews.length > 0 &&
-          reviewsData.reviews.map((review, index) => (
+        {!isLoading &&
+          reviews?.reviews &&
+          reviews?.reviews?.map((review, index) => (
             <Tr
               key={review.review_id}
               bgColor={index % 2 === 0 ? 'gray.50' : 'white'}
@@ -127,7 +122,7 @@ export function SectionReviews({ onNextPage, onPrevPage }) {
                 <ButtonOutline
                   text={'Details'}
                   isActive={true}
-                  onClick={() => fetchReviewDetails(review.review_id)}
+                  onClick={() => handleOpen(review.review_id)}
                   _hover={{
                     bgColor: 'brand.600',
                   }}
@@ -137,17 +132,17 @@ export function SectionReviews({ onNextPage, onPrevPage }) {
           ))}
       </TableBase>
 
-      {reviewsData && reviewsData.pagination && (
+      {reviews && reviews.pagination && (
         <Pagination
-          totalPage={reviewsData?.pagination?.total_page}
-          page={reviewsData?.pagination?.page}
+          totalPage={reviews?.pagination?.total_page}
+          page={reviews?.pagination?.page}
           onNextPage={onNextPage}
           onPrevPage={onPrevPage}
-          isLoading={reviewsLoading}
+          isLoading={isLoading}
         />
       )}
-      <LoadingOverlay isLoading={detailLoading} />
-      {!detailLoading && (
+      {fetchReviewDetailsLoading && <LoadingOverlay isLoading={fetchReviewDetailsLoading} />}
+      {!fetchReviewDetailsLoading && (
         <ModalDetailReview
           isOpen={isOpen}
           onClose={onClose}

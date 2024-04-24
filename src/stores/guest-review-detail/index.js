@@ -1,8 +1,11 @@
 import { create } from 'zustand';
 
+const initialState = {
+  reviewDetail: null,
+};
+
 export const useReviewDetailStore = create((set) => ({
-	data: {},
-	loading: false,
-	setData: (data) => set({ data }),
-	setLoading: (loading) => set({ loading }),
+  ...initialState,
+  setReviewDetail: (reviewDetail) => set({ reviewDetail }),
+  resetReviewDetail: () => set(initialState),
 }));

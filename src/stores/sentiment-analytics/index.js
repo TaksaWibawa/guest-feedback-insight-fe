@@ -1,9 +1,11 @@
 import { create } from 'zustand';
 
+const initialState = {
+  analytics: [],
+};
+
 export const useAnalyticsStore = create((set) => ({
-	analytics: [],
-	loading: true,
-	setAnalytics: (analytics) => set({ analytics }),
-	setLoading: (loading) => set({ loading }),
-	resetAnalyticsStore: () => set({ analytics: [], loading: true }),
+  ...initialState,
+  setAnalytics: (analytics) => set({ analytics }),
+  resetAnalyticsStore: () => set({ analytics: [], loading: true }),
 }));
