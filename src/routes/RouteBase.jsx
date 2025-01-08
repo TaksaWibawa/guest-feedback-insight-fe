@@ -3,7 +3,6 @@ import {
   PageContentMissing,
   PageGuestReviews,
   PageLogin,
-  PageScrapping,
   PageSentimentAnalytics,
   PageUnauthorized,
 } from '@/pages';
@@ -38,14 +37,6 @@ export const RouteBase = () => {
           element: (
             <BaseLayout>
               <PageSentimentAnalytics />
-            </BaseLayout>
-          ),
-        },
-        {
-          path: '/scrapping',
-          element: (
-            <BaseLayout>
-              <PageScrapping />
             </BaseLayout>
           ),
         },

@@ -36,7 +36,7 @@ export function Profile({ isCollapsed, setIsCollapsed }) {
         logout();
       });
     } else {
-      navigate(menu);
+      navigate(MENU_ITEMS.find((item) => item.name === menu)?.href);
     }
   };
 
@@ -66,6 +66,7 @@ export function Profile({ isCollapsed, setIsCollapsed }) {
         onClick={toggleMenu}
         cursor={'pointer'}
         _hover={{ bgColor: 'gray.100' }}
+        maxW={'full'}
       >
         <Flex
           flexDirection={'row'}
@@ -98,7 +99,7 @@ export function Profile({ isCollapsed, setIsCollapsed }) {
                   fontWeight={'bold'}
                   isTruncated
                 >
-                  {user?.displayName || 'Username'}
+                  {user?.displayName || user?.email || 'Username'}
                 </Text>
                 <Text
                   fontSize={'0.9rem'}

@@ -11,16 +11,29 @@ import {
   Image,
   Spacer,
   IconButton,
+  Divider,
 } from '@chakra-ui/react';
 import { ButtonOutline } from '../../button';
-import { MdApps, MdInsertChart, MdPeople, MdWarning } from 'react-icons/md';
+import { createToastStore, useScrappingStore } from '@/stores';
+import { MdApps, MdInsertChart, MdPeople, MdRefresh, MdWarning } from 'react-icons/md';
 import { Profile } from './Profile';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRef } from 'react';
 
 import LogoFull from '@/assets/guestpro-full.png';
+import { APIGuestReviews } from '@/apis';
+
+const RESPONSE_TEXT = {
+  SUCCESS: 'Scrapping process has been started successfully',
+  ERROR: 'Failed to start scrapping process. Error message:',
+  LOADING: 'Scrapping in progress...',
+  BUTTON_TEXT: 'Click the button to start scrapping',
+};
 
 export function NavigationMobile() {
+  const { isLoading, setIsLoading } = useScrappingStore();
+  const { setToast } = createToastStore();
+
   const { isOpen, onToggle } = useDisclosure();
 
   const btnRef = useRef();
@@ -33,6 +46,28 @@ export function NavigationMobile() {
 
   const handleCollapse = () => {
     onToggle();
+  };
+
+  const handleScrapping = async () => {
+    setIsLoading(true);
+    try {
+      await APIGuestReviews.startScrapping();
+      setToast({
+        status: 'SUCCESS',
+        title: 'Success',
+        message: RESPONSE_TEXT.SUCCESS,
+      });
+      window.location.reload();
+    } catch (error) {
+      setToast({
+        status: 'ERROR',
+        title: 'Error',
+        message: `${RESPONSE_TEXT.ERROR} ${error || 'Something went wrong'}`,
+      });
+      throw new Error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -128,6 +163,24 @@ export function NavigationMobile() {
               ))}
               <Spacer />
               <Profile />
+              <Divider borderColor={'blackAlpha.500'} />
+              <Flex
+                flexDirection={'column'}
+                alignItems={!isOpen && 'center'}
+                w={'full'}
+                gap={'1rem'}
+              >
+                <ButtonOutline
+                  text={'Start Scraping'}
+                  leftIcon={<MdRefresh size={24} />}
+                  onClick={handleScrapping}
+                  bgColor={'red.500'}
+                  color={'white'}
+                  _hover={{ bgColor: 'red.600' }}
+                  justifyContent={isLoading && 'center'}
+                  isLoading={isLoading}
+                />
+              </Flex>
             </DrawerBody>
           </DrawerContent>
         </DrawerOverlay>

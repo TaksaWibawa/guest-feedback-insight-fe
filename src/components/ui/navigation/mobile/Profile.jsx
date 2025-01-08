@@ -25,8 +25,8 @@ const MENU_ITEMS = [
 ];
 
 export function Profile() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { user, logout } = useAuthStore();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
 
   const handleClick = async (menu) => {
